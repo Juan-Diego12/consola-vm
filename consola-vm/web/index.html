@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!-- Página provisional de pruebas (Diego). Daniel la reemplaza con la interfaz real. -->
+<html lang="es">
+<head><meta charset="UTF-8"><title>Consola VM - pruebas</title>
+<style>body{font-family:sans-serif;max-width:900px;margin:2rem auto}pre{background:#111;color:#ddd;padding:1rem;overflow:auto}</style>
+</head>
+<body>
+<h1>Llaves SSH de root (prueba)</h1>
+<p><label>VM: <input id="vm" value="DebianDev"></label>
+<label>Contraseña root: <input id="pw" type="password"></label>
+<label><input id="rep" type="checkbox"> Reemplazar llave</label>
+<button onclick="configurar()">Configurar</button>
+<button onclick="location='/api/llaves/descargar?vm='+encodeURIComponent(vm.value)">Descargar llave privada</button></p>
+<pre id="out">Resultado...</pre>
+<script>
+async function configurar() {
+  out.textContent = "Ejecutando...";
+  const r = await fetch("/api/llaves/root", {method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({vm: vm.value, password: pw.value, reemplazar: rep.checked})});
+  out.textContent = JSON.stringify(await r.json(), null, 2);
+}
+</script>
+</body>
+</html>
