@@ -14,10 +14,10 @@ func EjecutarGuest(vm, usuario, password, comando string) Resultado {
 		"--username", usuario,
 		"--password", password,
 		"--exe", "/bin/bash",
-		"--", "bash", "-c", comando, // después de "--" va argv[0] (bash) y sus argumentos
+		"--", "-c", comando, // VirtualBox 7.2 toma argv[0] de --exe; aquí van solo los argumentos
 	}
 	// La contraseña nunca se guarda en el log ni se devuelve a la interfaz.
-	visible := fmt.Sprintf("VBoxManage guestcontrol %s run --username %s --password **** --exe /bin/bash -- bash -c %q",
+	visible := fmt.Sprintf("VBoxManage guestcontrol %s run --username %s --password **** --exe /bin/bash -- -c %q",
 		vm, usuario, comando)
 	return ejecutar("guest", vm, visible, VBoxManage, args...)
 }

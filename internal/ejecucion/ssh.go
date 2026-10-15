@@ -12,6 +12,8 @@ func opcionesSSH(llave string) []string {
 		"-o", "StrictHostKeyChecking=accept-new",
 		"-o", "UserKnownHostsFile=" + DirLlaves + "/known_hosts", // relativo: sin espacios
 		"-o", "ConnectTimeout=10",
+		"-o", "ConnectTimeout=10",
+		"-o", "LogLevel=ERROR", // oculta avisos informativos como "Permanently added..."
 	}
 }
 
