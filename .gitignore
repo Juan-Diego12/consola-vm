@@ -1,10 +1,10 @@
 # Llaves SSH generadas por la consola (nunca subirlas)
-llaves/
+/llaves/
 # Log técnico de operaciones
-logs/
+/logs/
 # Binarios
 *.exe
-consola-vm
-catalogo-libros
+/consola-vm
+/catalogo-libros
 # IDE
 .idea/
