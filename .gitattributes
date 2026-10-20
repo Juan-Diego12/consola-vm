@@ -1,0 +1,5 @@
+# Los scripts se ejecutan en Linux: siempre con saltos de línea LF,
+# aunque Git en Windows convierta el resto a CRLF.
+*.sh text eol=lf
+# El binario del catálogo nunca debe modificarse
+recursos/catalogo/catalogo-libros binary

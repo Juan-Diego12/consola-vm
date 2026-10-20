@@ -1,0 +1,5 @@
+Copie aquí el catálogo compilado para Linux:
+  catalogo-libros   (binario, compilado con compilarlinux.bat)
+  static/           (carpeta completa)
+  data/             (carpeta con libros.json)
+Este archivo de texto no se copia a la VM.

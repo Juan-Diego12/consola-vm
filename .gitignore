@@ -2,6 +2,8 @@
 /llaves/
 # Log técnico de operaciones
 /logs/
+# Archivos temporales de la consola
+/tmp/
 # Binarios
 *.exe
 /consola-vm

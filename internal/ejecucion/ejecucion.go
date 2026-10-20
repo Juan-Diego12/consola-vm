@@ -82,6 +82,12 @@ func Fallo(operacion, destino, mensaje string) Resultado {
 // ejecutar corre el programa con tiempo máximo, captura salidas y registra la operación.
 // comandoVisible es lo que se guarda en el log y se muestra en la interfaz (sin contraseñas).
 func ejecutar(operacion, destino, comandoVisible, programa string, args ...string) Resultado {
+	return ejecutarConEntrada(operacion, destino, comandoVisible, "", programa, args...)
+}
+
+// ejecutarConEntrada es igual a ejecutar, pero envía "entrada" por la entrada estándar
+// del programa (para contraseñas). La entrada nunca se registra.
+func ejecutarConEntrada(operacion, destino, comandoVisible, entrada, programa string, args ...string) Resultado {
 	ctx, cancelar := context.WithTimeout(context.Background(), TiempoMaximo)
 	defer cancelar()
 
@@ -89,6 +95,9 @@ func ejecutar(operacion, destino, comandoVisible, programa string, args ...strin
 	var salida, errores bytes.Buffer
 	cmd.Stdout = &salida
 	cmd.Stderr = &errores
+	if entrada != "" {
+		cmd.Stdin = strings.NewReader(entrada)
+	}
 
 	inicio := time.Now()
 	err := cmd.Run()
