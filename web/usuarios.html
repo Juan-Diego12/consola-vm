@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consola de automatización de servicios</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<header id="encabezado"></header>
+<main>
+  <div id="titulo-modulo"></div>
+
+  <section class="barra-vm" aria-label="Máquina virtual">
+    <div class="campo"><label for="vm">Máquina virtual (nombre en VirtualBox)</label><input id="vm" type="text" autocomplete="off"></div>
+    <div class="campo"><label for="ip">Dirección IP de la VM</label><input id="ip" type="text" placeholder="192.168.20.x" autocomplete="off"></div>
+    <div class="campo"><button id="btn-ip" class="boton gris" type="button">Detectar IP</button></div>
+    <p class="nota">Los usuarios se crean y eliminan por SSH como root: configure antes las llaves de root de esta VM.</p>
+  </section>
+
+  <div class="paneles">
+    <section class="panel">
+      <h3>Crear usuario</h3>
+      <p class="descripcion">Cree un nuevo usuario y configure sus privilegios.</p>
+      <div class="campo"><label for="u-nombre">Nombre de usuario</label>
+        <input id="u-nombre" type="text" maxlength="32" placeholder="ana" autocomplete="off"></div>
+      <div class="campo"><label for="u-pw">Contraseña</label>
+        <input id="u-pw" type="password" autocomplete="new-password"></div>
+      <label class="casilla"><input id="u-sudo" type="checkbox" checked> Asignar privilegios de sudo</label>
+      <label class="casilla"><input id="u-llaves" type="checkbox" checked> Generar llave SSH</label>
+      <div class="botones">
+        <button id="btn-crear" class="boton verde" type="button">Crear</button>
+        <button id="btn-u-descargar" class="boton azul" type="button">Descargar llave privada</button>
+      </div>
+      <p class="ayuda">Minúsculas, números, guion y guion bajo; debe empezar por letra. La contraseña es obligatoria con sudo
+        (sudo la pide) o si no se generan llaves. No puede contener «:».</p>
+    </section>
+
+    <section class="panel">
+      <h3>Eliminar usuario</h3>
+      <p class="descripcion">Seleccione el usuario que desea eliminar.</p>
+      <div class="campo"><label for="u-lista">Usuarios</label>
+        <select id="u-lista"><option value="">(cargue la lista)</option></select></div>
+      <label class="casilla"><input id="u-archivos" type="checkbox" checked> Eliminar todos los archivos</label>
+      <div class="botones">
+        <button id="btn-eliminar-u" class="boton rojo" type="button">Eliminar</button>
+        <button id="btn-listar" class="boton gris" type="button">Actualizar lista</button>
+      </div>
+    </section>
+  </div>
+
+  <h3>Usuarios de la VM</h3>
+  <table class="tabla">
+    <thead><tr><th>Usuario</th><th>UID</th><th>Carpeta</th><th>Shell</th><th>Sudo</th><th>Llave en la consola</th></tr></thead>
+    <tbody id="u-tabla"><tr><td colspan="6" class="vacio">Pulse «Actualizar lista» para consultar los usuarios.</td></tr></tbody>
+  </table>
+
+  <div id="resultado" class="resultado vacio" role="status" aria-live="polite">Aquí aparecerá el resultado de cada operación, con el detalle técnico de los comandos ejecutados.</div>
+</main>
+<footer id="pie"></footer>
+<script src="js/comun.js"></script>
+<script src="js/usuarios.js"></script>
+</body>
+</html>

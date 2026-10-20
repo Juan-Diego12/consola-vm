@@ -98,3 +98,25 @@ Las firmas existentes no cambian. Se agregó:
 - Cada cambio se valida con `haproxy -c` antes de aplicarse. Si es inválido, no se cambia nada; si es válido, queda copia en `haproxy.cfg.bak` y se recarga HAProxy.
 - Nombre del servidor: `^[A-Za-z0-9_-]{1,32}$`. No se permiten nombres repetidos ni la misma IP:puerto dos veces.
 
+
+## Preparación del sistema (Daniel)
+
+Rutas registradas con `api.RegistrarSistema(mux)` (archivo `internal/api/sistema.go`); la lógica está en `internal/sistema`.
+
+| Método y ruta | Entrada | `datos` |
+|---|---|---|
+| `GET /api/sistema/info?vm=X&ip=Y` | | `hostname`, `hosts` (línea 127.0.1.1), `debian`, `issue` |
+| `GET /api/sistema/paquete?vm=X&ip=Y&paquete=P` | | (el estado va en `mensaje`) |
+| `POST /api/sistema/paquete` | `{"vm","ip","paquete","accion"}` con `accion`: `instalar` o `eliminar` | |
+| `POST /api/sistema/issue` | `{"vm","ip","hostname":bool,"fecha":bool,"hora":bool,"direccionIP":bool,"mensaje"}` | |
+| `POST /api/sistema/hostname` | `{"vm","ip","hostname"}` | `hostname` |
+
+- Paquete: `^[a-z0-9][a-z0-9+.-]{1,62}$` (política de nombres de Debian). Instalar y eliminar hacen tres pasos: estado antes, `apt-get` no interactivo y estado después. No se pueden eliminar paquetes esenciales (openssh-server, systemd, apt, dpkg, bash, red, kernel, etc.).
+- `/etc/issue`: al menos una casilla o un mensaje; mensaje de máximo 120 caracteres, sin saltos de línea ni caracteres de control. El texto viaja por la entrada estándar (nunca dentro del comando) y sus barras invertidas se duplican para que agetty no las interprete. La primera vez se guarda `/etc/issue.orig` y después se ejecuta `agetty --reload`.
+- Hostname: `^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$` (se pasa a minúsculas). Usa `hostnamectl set-hostname` y reemplaza o agrega la línea `127.0.1.1` de `/etc/hosts`.
+
+## Interfaz (`web/`)
+
+- `index.html`: tarjetas de los cuatro módulos. Páginas: `preparacion.html`, `usuarios.html`, `servicios.html` y `haproxy.html`.
+- `js/comun.js`: barra de la VM (nombre + IP con «Detectar IP»), llamadas a la API, validación en el navegador con las mismas expresiones del servidor y presentación del resultado (`mensaje` y el detalle de cada paso).
+- Al descargar una llave privada se muestra una ventana con las recomendaciones de uso correcto.

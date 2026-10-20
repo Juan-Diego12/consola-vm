@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consola de automatización de servicios</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<header id="encabezado"></header>
+<main>
+  <div id="titulo-modulo"></div>
+
+  <section class="barra-vm" aria-label="Máquina virtual">
+    <div class="campo"><label for="vm">Máquina virtual (nombre en VirtualBox)</label><input id="vm" type="text" autocomplete="off"></div>
+    <div class="campo"><label for="ip">Dirección IP de la VM</label><input id="ip" type="text" placeholder="192.168.20.x" autocomplete="off"></div>
+    <div class="campo"><button id="btn-ip" class="boton gris" type="button">Detectar IP</button></div>
+    <p class="nota">La IP se obtiene con Guest Additions («Detectar IP») y también se completa sola al configurar las llaves de root.</p>
+  </section>
+
+  <div class="paneles">
+    <section class="panel">
+      <h3>Instalar aplicación</h3>
+      <p class="descripcion">Instale o elimine un paquete de los repositorios de Debian.</p>
+      <div class="campo"><label for="paquete">Nombre del paquete</label>
+        <input id="paquete" type="text" placeholder="tree" maxlength="63" autocomplete="off"></div>
+      <div class="botones">
+        <button id="btn-instalar" class="boton verde" type="button">Instalar</button>
+        <button id="btn-eliminar" class="boton rojo" type="button">Eliminar</button>
+        <button id="btn-consultar" class="boton gris" type="button">Consultar</button>
+      </div>
+      <p class="ayuda">Minúsculas, números y + - . (ejemplos: tree, curl, nginx). Los paquetes esenciales del sistema no se pueden eliminar.</p>
+    </section>
+
+    <section class="panel">
+      <h3>Configuración de llaves</h3>
+      <p class="descripcion">Generación y configuración de las llaves SSH (privada y pública).</p>
+      <p class="alerta-roja">Únicamente usuario root</p>
+      <div class="campo"><label for="pw-root">Contraseña de root (solo para el arranque inicial)</label>
+        <input id="pw-root" type="password" autocomplete="off" placeholder="o use VBOX_GUEST_PASSWORD"></div>
+      <label class="casilla"><input id="reemplazar" type="checkbox"> Reemplazar la llave si ya existe</label>
+      <div class="botones">
+        <button id="btn-llaves" class="boton azul" type="button">Generar y configurar llaves SSH</button>
+      </div>
+      <h3>Descargar llave privada</h3>
+      <div class="botones"><button id="btn-descargar" class="boton azul" type="button">Descargar</button></div>
+      <p class="ayuda">Al terminar se desactiva el acceso por contraseña: desde ese momento la VM solo acepta llaves.</p>
+    </section>
+
+    <section class="panel">
+      <h3>Personalización del sistema</h3>
+      <p class="descripcion">Mensaje que se muestra antes de iniciar sesión (/etc/issue).</p>
+      <label class="casilla"><input id="ch-host" type="checkbox" checked> Nombre del host</label>
+      <label class="casilla"><input id="ch-fecha" type="checkbox" checked> Fecha actual</label>
+      <label class="casilla"><input id="ch-hora" type="checkbox" checked> Hora actual</label>
+      <label class="casilla"><input id="ch-ip" type="checkbox" checked> Dirección IP</label>
+      <div class="campo"><label for="mensaje">Mensaje personalizado</label>
+        <input id="mensaje" type="text" maxlength="120" placeholder="Computación en la nube 2026-2" autocomplete="off"></div>
+      <div class="botones">
+        <button id="btn-issue" class="boton verde" type="button">Aplicar cambios</button>
+        <button id="btn-info" class="boton gris" type="button">Ver estado actual</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>Asignar nombre de host</h3>
+      <p class="descripcion">Cambia el hostname y actualiza /etc/hosts.</p>
+      <div class="campo"><label for="hostname">Nuevo nombre de host</label>
+        <input id="hostname" type="text" maxlength="63" placeholder="servidor-web1" autocomplete="off"></div>
+      <div class="botones"><button id="btn-hostname" class="boton verde" type="button">Aplicar cambios</button></div>
+      <p class="ayuda">Minúsculas, números y guiones; sin empezar ni terminar en guion (máximo 63).</p>
+    </section>
+  </div>
+
+  <div id="resultado" class="resultado vacio" role="status" aria-live="polite">Aquí aparecerá el resultado de cada operación, con el detalle técnico de los comandos ejecutados.</div>
+</main>
+<footer id="pie"></footer>
+<script src="js/comun.js"></script>
+<script src="js/preparacion.js"></script>
+</body>
+</html>

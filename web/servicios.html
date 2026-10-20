@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consola de automatización de servicios</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<header id="encabezado"></header>
+<main>
+  <div id="titulo-modulo"></div>
+
+  <section class="barra-vm" aria-label="Máquina virtual">
+    <div class="campo"><label for="vm">Máquina virtual (nombre en VirtualBox)</label><input id="vm" type="text" autocomplete="off"></div>
+    <div class="campo"><label for="ip">Dirección IP de la VM</label><input id="ip" type="text" placeholder="192.168.20.x" autocomplete="off"></div>
+    <div class="campo"><button id="btn-ip" class="boton gris" type="button">Detectar IP</button></div>
+    <p class="nota">Los recursos se copian a /opt/&lt;recurso&gt; y se crea la unidad /etc/systemd/system/&lt;recurso&gt;.service.</p>
+  </section>
+
+  <div class="paneles">
+    <section class="panel">
+      <p class="descripcion">Inicie, detenga, reinicie o consulte el estado de servicios en el sistema.</p>
+      <div class="campo"><label for="recurso">Nombre del servicio</label>
+        <select id="recurso"><option value="">Cargando recursos...</option></select></div>
+      <p id="recurso-desc" class="ayuda"></p>
+      <div class="botones">
+        <button id="btn-desplegar" class="boton azul" type="button">Instalar como servicio</button>
+        <button id="btn-unidad" class="boton gris" type="button">Ver archivo .service</button>
+        <a id="lnk-app" class="boton gris" href="#" target="_blank" rel="noopener" hidden>Abrir la aplicación</a>
+      </div>
+      <p class="ayuda">«Instalar como servicio» transfiere los archivos, asigna permisos y crea la unidad (no la inicia).</p>
+      <div class="botones-servicio">
+        <button class="boton verde" type="button" data-accion="start">Iniciar</button>
+        <button class="boton azul" type="button" data-accion="restart">Reiniciar</button>
+        <button class="boton rojo" type="button" data-accion="stop">Detener</button>
+        <button class="boton gris" type="button" data-accion="status">Estado</button>
+        <button class="boton verde" type="button" data-accion="enable">Habilitar</button>
+        <button class="boton gris" type="button" data-accion="disable">Deshabilitar</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h3>Estado del servicio</h3>
+      <pre id="consola-servicio" class="consola">Sin consultas todavía.</pre>
+    </section>
+  </div>
+
+  <div id="resultado" class="resultado vacio" role="status" aria-live="polite">Aquí aparecerá el resultado de cada operación, con el detalle técnico de los comandos ejecutados.</div>
+</main>
+<footer id="pie"></footer>
+<script src="js/comun.js"></script>
+<script src="js/servicios.js"></script>
+</body>
+</html>

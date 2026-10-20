@@ -88,6 +88,14 @@ func ejecutar(operacion, destino, comandoVisible, programa string, args ...strin
 // ejecutarConEntrada es igual a ejecutar, pero envía "entrada" por la entrada estándar
 // del programa (para contraseñas). La entrada nunca se registra.
 func ejecutarConEntrada(operacion, destino, comandoVisible, entrada, programa string, args ...string) Resultado {
+	r := correr(operacion, destino, comandoVisible, entrada, programa, args...)
+	registrar(r)
+	return r
+}
+
+// correr ejecuta el programa y arma el Resultado, pero sin registrarlo en el log.
+// La usan ejecutarConEntrada y EjecutarGuest (que ajusta el resultado antes de registrarlo).
+func correr(operacion, destino, comandoVisible, entrada, programa string, args ...string) Resultado {
 	ctx, cancelar := context.WithTimeout(context.Background(), TiempoMaximo)
 	defer cancelar()
 
@@ -125,7 +133,6 @@ func ejecutarConEntrada(operacion, destino, comandoVisible, entrada, programa st
 		}
 	}
 	r.Exito = r.Codigo == 0
-	registrar(r)
 	return r
 }
 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consola de automatización de servicios</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<header id="encabezado"></header>
+<main>
+  <div id="titulo-modulo"></div>
+
+  <section class="barra-vm" aria-label="Máquina virtual">
+    <div class="campo"><label for="vm">Máquina virtual (nombre en VirtualBox)</label><input id="vm" type="text" autocomplete="off"></div>
+    <div class="campo"><label for="ip">Dirección IP de la VM</label><input id="ip" type="text" placeholder="192.168.20.x" autocomplete="off"></div>
+    <div class="campo"><button id="btn-ip" class="boton gris" type="button">Detectar IP</button></div>
+    <p class="nota">Use aquí la VM de HAProxy. Las IP de los servidores del backend se escriben en el formulario «Agregar servidor».</p>
+  </section>
+
+  <div class="paneles">
+    <section class="panel">
+      <h3>Agregar servidor al backend</h3>
+      <p class="descripcion">El servidor debe tener la aplicación escuchando en el puerto indicado.</p>
+      <div class="campo"><label for="s-nombre">Nombre del servidor</label>
+        <input id="s-nombre" type="text" maxlength="32" placeholder="backend1" autocomplete="off"></div>
+      <div class="campo"><label for="s-ip">IP del servidor</label>
+        <input id="s-ip" type="text" placeholder="192.168.20.32" autocomplete="off"></div>
+      <div class="campo"><label for="s-puerto">Puerto</label>
+        <input id="s-puerto" type="number" min="1" max="65535" value="8000"></div>
+      <div class="botones"><button id="btn-agregar" class="boton verde" type="button">Agregar</button></div>
+      <p class="ayuda">Cada cambio se valida con <code>haproxy -c</code> antes de aplicarse; si es válido se guarda una copia
+        <code>haproxy.cfg.bak</code> y se recarga HAProxy.</p>
+    </section>
+
+    <section class="panel">
+      <h3>Servidores del backend</h3>
+      <p class="descripcion">Frontend en el puerto <span id="puerto-front">80</span>, algoritmo round robin.</p>
+      <table class="tabla">
+        <thead><tr><th>Nombre</th><th>IP</th><th>Puerto</th><th></th></tr></thead>
+        <tbody id="s-tabla"><tr><td colspan="4" class="vacio">Pulse «Actualizar» para consultar el backend.</td></tr></tbody>
+      </table>
+      <div class="botones"><button id="btn-servidores" class="boton gris" type="button">Actualizar</button></div>
+    </section>
+
+    <section class="panel">
+      <h3>Probar el balanceo</h3>
+      <p class="descripcion">Envía peticiones a través de HAProxy y muestra qué servidor respondió cada una.</p>
+      <div class="campo"><label for="n-peticiones">Número de peticiones</label>
+        <input id="n-peticiones" type="number" min="1" max="20" value="6"></div>
+      <div class="botones">
+        <button id="btn-probar" class="boton azul" type="button">Probar</button>
+        <a id="lnk-haproxy" class="boton gris" href="#" target="_blank" rel="noopener">Abrir en el navegador</a>
+      </div>
+      <pre id="consola-balanceo" class="consola">Sin pruebas todavía.</pre>
+    </section>
+  </div>
+
+  <div id="resultado" class="resultado vacio" role="status" aria-live="polite">Aquí aparecerá el resultado de cada operación, con el detalle técnico de los comandos ejecutados.</div>
+</main>
+<footer id="pie"></footer>
+<script src="js/comun.js"></script>
+<script src="js/haproxy.js"></script>
+</body>
+</html>

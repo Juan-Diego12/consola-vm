@@ -1,24 +1,48 @@
 <!DOCTYPE html>
-<!-- Página provisional de pruebas (Diego). Daniel la reemplaza con la interfaz real. -->
 <html lang="es">
-<head><meta charset="UTF-8"><title>Consola VM - pruebas</title>
-<style>body{font-family:sans-serif;max-width:900px;margin:2rem auto}pre{background:#111;color:#ddd;padding:1rem;overflow:auto}</style>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consola de automatización de servicios</title>
+<link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-<h1>Llaves SSH de root (prueba)</h1>
-<p><label>VM: <input id="vm" value="DebianDev"></label>
-<label>Contraseña root: <input id="pw" type="password"></label>
-<label><input id="rep" type="checkbox"> Reemplazar llave</label>
-<button onclick="configurar()">Configurar</button>
-<button onclick="location='/api/llaves/descargar?vm='+encodeURIComponent(vm.value)">Descargar llave privada</button></p>
-<pre id="out">Resultado...</pre>
+<header id="encabezado"></header>
+<main>
+  <p class="intro">Administre las máquinas virtuales Debian sin intervención manual. Antes de usar un módulo sobre una VM,
+  configure sus llaves de root en <b>Preparación del sistema</b>: a partir de ahí toda la comunicación se hace por SSH con llaves.</p>
+  <div class="tarjetas">
+    <article class="tarjeta">
+      <span data-icono="engranaje"></span>
+      <h2>Preparación del sistema</h2>
+      <p>Llaves SSH de root, instalación y eliminación de aplicaciones, mensaje de entrada y nombre del host.</p>
+      <a class="boton verde" href="preparacion.html">Ir al módulo</a>
+    </article>
+    <article class="tarjeta">
+      <span data-icono="usuario"></span>
+      <h2>Gestión de Usuarios</h2>
+      <p>Crear usuarios con privilegios de sudo y llaves SSH, y eliminarlos con o sin sus archivos.</p>
+      <a class="boton verde" href="usuarios.html">Ir al módulo</a>
+    </article>
+    <article class="tarjeta">
+      <span data-icono="servicios"></span>
+      <h2>Gestión de Servicios</h2>
+      <p>Instalar aplicaciones como servicios de systemd e iniciarlas, detenerlas, reiniciarlas, habilitarlas o consultar su estado.</p>
+      <a class="boton verde" href="servicios.html">Ir al módulo</a>
+    </article>
+    <article class="tarjeta">
+      <span data-icono="balanceo"></span>
+      <h2>Balanceador de carga</h2>
+      <p>Agregar y quitar servidores del backend de HAProxy y comprobar el reparto de peticiones (round robin).</p>
+      <a class="boton verde" href="haproxy.html">Ir al módulo</a>
+    </article>
+  </div>
+</main>
+<footer id="pie"></footer>
+<script src="js/comun.js"></script>
 <script>
-async function configurar() {
-  out.textContent = "Ejecutando...";
-  const r = await fetch("/api/llaves/root", {method: "POST", headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({vm: vm.value, password: pw.value, reemplazar: rep.checked})});
-  out.textContent = JSON.stringify(await r.json(), null, 2);
-}
+  Consola.marco();
+  document.querySelectorAll("[data-icono]").forEach((s) => { s.outerHTML = Consola.icono(s.dataset.icono); });
 </script>
 </body>
 </html>
